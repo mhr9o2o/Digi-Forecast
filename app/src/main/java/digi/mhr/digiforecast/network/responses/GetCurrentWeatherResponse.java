@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import digi.mhr.digiforecast.models.Coordination;
+import digi.mhr.digiforecast.models.SystemInformation;
 import digi.mhr.digiforecast.models.TemperatureCondition;
 import digi.mhr.digiforecast.models.WeatherCondition;
 import digi.mhr.digiforecast.models.Wind;
@@ -35,6 +36,9 @@ public class GetCurrentWeatherResponse implements Serializable {
     @Expose
     @SerializedName("dt")
     private long timestamp;
+    @Expose
+    @SerializedName("sys")
+    private SystemInformation systemInformation;
     @Expose
     @SerializedName("id")
     private int cityId;
@@ -88,6 +92,14 @@ public class GetCurrentWeatherResponse implements Serializable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public SystemInformation getSystemInformation() {
+        return systemInformation;
+    }
+
+    public void setSystemInformation(SystemInformation systemInformation) {
+        this.systemInformation = systemInformation;
     }
 
     public int getCityId() {
