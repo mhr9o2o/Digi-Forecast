@@ -13,24 +13,24 @@ public class Coordination implements Serializable {
 
     @Expose
     @SerializedName("lon")
-    private long longitude;
+    private double longitude;
     @Expose
     @SerializedName("lat")
-    private long latitude;
+    private double latitude;
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -41,14 +41,18 @@ public class Coordination implements Serializable {
 
         Coordination that = (Coordination) o;
 
-        if (longitude != that.longitude) return false;
-        return latitude == that.latitude;
+        if (Double.compare(that.longitude, longitude) != 0) return false;
+        return Double.compare(that.latitude, latitude) == 0;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (longitude ^ (longitude >>> 32));
-        result = 31 * result + (int) (latitude ^ (latitude >>> 32));
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(longitude);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(latitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 }
