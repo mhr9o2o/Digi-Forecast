@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import digi.mhr.digiforecast.models.Coordination;
@@ -23,7 +24,7 @@ public class GetCurrentWeatherResponse implements Serializable {
     private Coordination coordination;
     @Expose
     @SerializedName("weather")
-    private List<WeatherCondition> weather;
+    private List<WeatherCondition> weather = new ArrayList<>();
     @Expose
     @SerializedName("main")
     private TemperatureCondition mainTempCondition;
