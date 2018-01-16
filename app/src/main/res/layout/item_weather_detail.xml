@@ -35,8 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:text="99°C"/>
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -59,8 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:text="-99°C"/>
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -81,10 +79,9 @@
                     android:id="@+id/item_weather_detail_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="44sp"
-                    android:textStyle="bold"
                     android:padding="4dp"
-                    android:text="99"/>
+                    android:textSize="44sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,7 +104,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/d02"/>
+                android:src="@drawable/n02"/>
 
             <TextView
                 android:id="@+id/item_weather_detail_description"
@@ -143,9 +140,8 @@
                 android:id="@+id/item_weather_detail_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="25%"
-                android:textSize="18sp"
-                android:padding="4dp"/>
+                android:padding="4dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
