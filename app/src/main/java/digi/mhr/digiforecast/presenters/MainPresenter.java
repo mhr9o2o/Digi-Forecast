@@ -8,7 +8,7 @@ public interface MainPresenter {
 
     void onPermissionApproved();
     void onPermissionDenied();
-    void onResume();
+    void onResume(boolean hasLocationPermission);
     void onRefresh();
 
 }
