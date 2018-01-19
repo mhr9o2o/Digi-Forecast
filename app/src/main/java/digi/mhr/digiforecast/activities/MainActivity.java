@@ -1,5 +1,9 @@
 package digi.mhr.digiforecast.activities;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private TextView lastUpdateTV;
 
     /*
+     * Parameters:
+     */
+    private boolean hasFineLocationAccess = false;
+    private boolean hasCoarseLocationAccess = false;
+
+    /*
      * Activity Functions:
      */
 
@@ -47,6 +57,24 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
+         * Checking location permission:
+         */
+        int fineLocationPermissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int coarseLocationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (fineLocationPermissionCheck == PackageManager.PERMISSION_GRANTED) {
+            hasFineLocationAccess = true;
+        }
+
+        if (coarseLocationPermissionCheck == PackageManager.PERMISSION_GRANTED) {
+            hasCoarseLocationAccess = true;
+        }
+
+        /*
+         * Binding Views
+         */
         bindViews();
     }
 
