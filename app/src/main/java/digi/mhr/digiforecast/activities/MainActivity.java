@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         currentConditionIV = findViewById(R.id.item_weather_detail_icon);
         conditionDescriptionTV = findViewById(R.id.item_weather_detail_description);
         humidityTV = findViewById(R.id.item_weather_detail_humidity);
-        windSpeedTV = findViewById(R.id.item_weather_detail_wind_velocity);
+        windSpeedTV = findViewById(R.id.item_weather_detail_wind_speed);
         windDegreeTV = findViewById(R.id.item_weather_detail_wind_degree);
         //
         swipeRefreshLayout = findViewById(R.id.activity_main_refresh_layout);
