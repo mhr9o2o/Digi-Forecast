@@ -1,4 +1,4 @@
-package digi.mhr.digiforecast.utilities;
+package digi.mhr.digiforecast.utilities.Location;
 
 import android.content.Context;
 import android.location.Location;

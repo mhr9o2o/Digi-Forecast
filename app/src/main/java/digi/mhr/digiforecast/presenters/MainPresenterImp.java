@@ -1,12 +1,5 @@
 package digi.mhr.digiforecast.presenters;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import digi.mhr.digiforecast.R;
@@ -14,7 +7,7 @@ import digi.mhr.digiforecast.data.DataFactory;
 import digi.mhr.digiforecast.data.DataListener;
 import digi.mhr.digiforecast.models.Coordination;
 import digi.mhr.digiforecast.network.responses.GetCurrentWeatherResponse;
-import digi.mhr.digiforecast.utilities.FallbackLocationTracker;
+import digi.mhr.digiforecast.utilities.Location.FallbackLocationTracker;
 import digi.mhr.digiforecast.views.MainView;
 
 /**

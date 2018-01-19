@@ -1,10 +1,7 @@
 package digi.mhr.digiforecast.activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +18,7 @@ import digi.mhr.digiforecast.models.TemperatureCondition;
 import digi.mhr.digiforecast.models.WeatherCondition;
 import digi.mhr.digiforecast.models.Wind;
 import digi.mhr.digiforecast.presenters.MainPresenterImp;
-import digi.mhr.digiforecast.utilities.FallbackLocationTracker;
+import digi.mhr.digiforecast.utilities.Location.FallbackLocationTracker;
 import digi.mhr.digiforecast.views.MainView;
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -52,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     /*
      * Parameters:
      */
-    private final long LOCATION_REFRESH_TIME = 60*1000; // 1 second
-    private final float LOCATION_REFRESH_DISTANCE = 10*1000; // 10 KM
     private boolean hasFineLocationAccess = false;
     private boolean hasCoarseLocationAccess = false;
     private FallbackLocationTracker locationTracker;
@@ -180,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void setTemperatureData(TemperatureCondition temperatureCondition) {
         String celsiusSuffix = getResources().getString(R.string.celsius_degree);
         String percentSuffix = getResources().getString(R.string.percent);
-        String currentTemp = String.valueOf(temperatureCondition.getTemperature()) + celsiusSuffix;
+        String currentTemp = String.valueOf((int) temperatureCondition.getTemperature());
         String minTemp = String.valueOf(temperatureCondition.getMinimumTemperature()) + celsiusSuffix;
         String maxTemp = String.valueOf(temperatureCondition.getMaximumTemperature()) + celsiusSuffix;
         String humidity = String.valueOf(temperatureCondition.getHumidity()) + percentSuffix;

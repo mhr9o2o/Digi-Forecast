@@ -1,4 +1,4 @@
-package digi.mhr.digiforecast.utilities;
+package digi.mhr.digiforecast.utilities.Location;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
