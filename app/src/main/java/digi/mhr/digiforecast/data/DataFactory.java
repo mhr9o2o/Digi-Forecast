@@ -39,12 +39,13 @@ public class DataFactory {
     }
 
     /*
-     * Singleton instance:
+     * Initializing & Singleton instance:
      */
-    public static synchronized DataFactory getInstance(Context context) {
-        if (instance == null) {
-            instance = new DataFactory(context);
-        }
+    public static void init(Context context) {
+        instance = new DataFactory(context);
+    }
+
+    public static DataFactory getInstance() {
         return instance;
     }
 
