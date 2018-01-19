@@ -86,6 +86,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
          * Initializing the Presenter
          */
         mainPresenter = new MainPresenterImp(this);
+
+        /*
+         * Refresh Listener
+         */
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mainPresenter.onRefresh();
+            }
+        });
+
+        if (!hasFineLocationAccess && !hasCoarseLocationAccess) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
+                    0);
+        }
+
     }
 
 
@@ -93,9 +110,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onResume() {
         super.onResume();
         if (!hasFineLocationAccess && !hasCoarseLocationAccess) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
-                    0);
             mainPresenter.onResume(false);
         } else {
             locationTracker = new FallbackLocationTracker(this);
@@ -114,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+            hasFineLocationAccess = true;
+            
             locationTracker = new FallbackLocationTracker(this);
 
             mainPresenter.setLocationTracker(locationTracker);

@@ -135,6 +135,13 @@ public class MainPresenterImp implements MainPresenter {
     @Override
     public void onRefresh() {
         mainView.showLoading();
+        if (locationTracker.getLocation() != null) {
+            coordination.setLatitude(locationTracker.getLocation().getLatitude());
+            coordination.setLongitude(locationTracker.getLocation().getLongitude());
+        } else if (locationTracker.getPossiblyStaleLocation() != null) {
+            coordination.setLatitude(locationTracker.getPossiblyStaleLocation().getLatitude());
+            coordination.setLongitude(locationTracker.getPossiblyStaleLocation().getLongitude());
+        }
         DataFactory.getInstance().refreshCurrentWeather(coordination.getLatitude(), coordination.getLongitude(), dataListener);
     }
 }
