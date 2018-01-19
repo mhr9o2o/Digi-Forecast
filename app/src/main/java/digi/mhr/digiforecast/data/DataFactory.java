@@ -120,7 +120,7 @@ public class DataFactory {
     /*
      * REFRESH:
      */
-    private void refreshCurrentWeather(double latitude, double longitude, final DataListener<GetCurrentWeatherResponse> listener) {
+    public void refreshCurrentWeather(double latitude, double longitude, final DataListener<GetCurrentWeatherResponse> listener) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -148,7 +148,7 @@ public class DataFactory {
 
     }
 
-    private void refreshFiveDayForecast(double latitude, double longitude, final DataListener<GetForecastResponse> listener) {
+    public void refreshFiveDayForecast(double latitude, double longitude, final DataListener<GetForecastResponse> listener) {
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
