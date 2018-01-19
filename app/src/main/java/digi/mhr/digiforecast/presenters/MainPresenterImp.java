@@ -62,47 +62,52 @@ public class MainPresenterImp implements MainPresenter {
     }
 
     /*
-         * Functions
-         */
-    private void initResponseOnView(GetCurrentWeatherResponse response) {
+     * Functions
+     */
+    // it's public just for unit test
+    public void initResponseOnView(GetCurrentWeatherResponse response) {
+
         mainView.configureViewAfterInitializing();
+
+        if (response != null) {
         /*
          * Region:
          */
-        String regionInfo = "";
+            String regionInfo = "";
 
-        if (response.getCityName() != null) {
-            regionInfo = response.getCityName();
-        }
+            if (response.getCityName() != null) {
+                regionInfo = response.getCityName();
+            }
 
-        if (response.getSystemInformation() != null && response.getSystemInformation().getCountry() != null) {
-            regionInfo += ", " + response.getSystemInformation().getCountry();
-        }
+            if (response.getSystemInformation() != null && response.getSystemInformation().getCountry() != null) {
+                regionInfo += ", " + response.getSystemInformation().getCountry();
+            }
 
-        mainView.setRegionInfoData(regionInfo);
+            mainView.setRegionInfoData(regionInfo);
         /*
          * Temperature & humidity:
          */
-        if (response.getMainTempCondition() != null) {
-            mainView.setTemperatureData(response.getMainTempCondition());
-        }
+            if (response.getMainTempCondition() != null) {
+                mainView.setTemperatureData(response.getMainTempCondition());
+            }
         /*
          * Condition:
          */
-        if (response.getWeather() != null && response.getWeather().size() > 0) {
-            mainView.setWeatherConditionData(response.getWeather().get(0));
-        }
+            if (response.getWeather() != null && response.getWeather().size() > 0) {
+                mainView.setWeatherConditionData(response.getWeather().get(0));
+            }
         /*
          * Wind:
          */
-        if (response.getWind() != null) {
-            mainView.setWindData(response.getWind());
-        }
+            if (response.getWind() != null) {
+                mainView.setWindData(response.getWind());
+            }
         /*
          * Last Update:
          */
-        if (response.getTimestamp() != 0) {
-            mainView.setLastUpdate(TimeUtils.getTimeAgo(response.getTimestamp()));
+            if (response.getTimestamp() != 0) {
+                mainView.setLastUpdate(TimeUtils.getTimeAgo(response.getTimestamp()));
+            }
         }
     }
 
@@ -135,13 +140,18 @@ public class MainPresenterImp implements MainPresenter {
     @Override
     public void onRefresh() {
         mainView.showLoading();
-        if (locationTracker.getLocation() != null) {
-            coordination.setLatitude(locationTracker.getLocation().getLatitude());
-            coordination.setLongitude(locationTracker.getLocation().getLongitude());
-        } else if (locationTracker.getPossiblyStaleLocation() != null) {
-            coordination.setLatitude(locationTracker.getPossiblyStaleLocation().getLatitude());
-            coordination.setLongitude(locationTracker.getPossiblyStaleLocation().getLongitude());
+        if (locationTracker != null) {
+            if (locationTracker.getLocation() != null) {
+                coordination.setLatitude(locationTracker.getLocation().getLatitude());
+                coordination.setLongitude(locationTracker.getLocation().getLongitude());
+            } else if (locationTracker.getPossiblyStaleLocation() != null) {
+                coordination.setLatitude(locationTracker.getPossiblyStaleLocation().getLatitude());
+                coordination.setLongitude(locationTracker.getPossiblyStaleLocation().getLongitude());
+            }
         }
-        DataFactory.getInstance().refreshCurrentWeather(coordination.getLatitude(), coordination.getLongitude(), dataListener);
+
+        if (DataFactory.getInstance() != null) {
+            DataFactory.getInstance().refreshCurrentWeather(coordination.getLatitude(), coordination.getLongitude(), dataListener);
+        }
     }
 }
