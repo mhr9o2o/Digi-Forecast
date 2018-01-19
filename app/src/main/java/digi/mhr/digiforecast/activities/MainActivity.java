@@ -76,4 +76,6 @@ public class MainActivity extends AppCompatActivity {
         lastUpdateTV = findViewById(R.id.activity_main_last_update);
     }
 
+
+
 }
