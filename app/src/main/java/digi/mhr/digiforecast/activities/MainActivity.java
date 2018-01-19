@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     /*
      * * Weather Detail Views:
      */
+    private LinearLayout weatherDetailHolder;
     private TextView maxTemperatureTV;
     private TextView minTemperatureTV;
     private TextView currentTemperatureTV;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView regionInfoTV;
+    private TextView lastUpdateLabelTV;
     private TextView lastUpdateTV;
 
     /*
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
      * Binding Functions:
      */
     private void bindViews() {
+        weatherDetailHolder = findViewById(R.id.include);
         maxTemperatureTV = findViewById(R.id.item_weather_detail_max_temp);
         minTemperatureTV = findViewById(R.id.item_weather_detail_min_temp);
         currentTemperatureTV = findViewById(R.id.item_weather_detail_temp);
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //
         swipeRefreshLayout = findViewById(R.id.activity_main_refresh_layout);
         regionInfoTV = findViewById(R.id.activity_main_region_info);
+        lastUpdateLabelTV = findViewById(R.id.activity_main_last_update_label);
         lastUpdateTV = findViewById(R.id.activity_main_last_update);
     }
 
