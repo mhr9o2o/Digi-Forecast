@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import digi.mhr.digiforecast.R;
 import digi.mhr.digiforecast.models.TemperatureCondition;
@@ -192,5 +193,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void setRegionInfoData(String region) {
         regionInfoTV.setText(region);
+    }
+
+    @Override
+    public void showError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(int errorResId) {
+        Toast.makeText(this, errorResId, Toast.LENGTH_SHORT).show();
     }
 }

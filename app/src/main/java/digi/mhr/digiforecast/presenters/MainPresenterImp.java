@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
+import digi.mhr.digiforecast.R;
 import digi.mhr.digiforecast.data.DataFactory;
 import digi.mhr.digiforecast.data.DataListener;
 import digi.mhr.digiforecast.models.Coordination;
@@ -68,7 +69,7 @@ public class MainPresenterImp implements MainPresenter {
 
             @Override
             public void onError(String error) {
-                // TODO
+                mainView.showError(error);
             }
         };
 
@@ -130,7 +131,7 @@ public class MainPresenterImp implements MainPresenter {
 
     @Override
     public void onPermissionDenied() {
-        // TODO
+        mainView.showError(R.string.location_permission_denied_message);
     }
 
     @Override

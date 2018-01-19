@@ -1,5 +1,7 @@
 package digi.mhr.digiforecast.views;
 
+import android.support.annotation.IdRes;
+
 import digi.mhr.digiforecast.models.TemperatureCondition;
 import digi.mhr.digiforecast.models.WeatherCondition;
 import digi.mhr.digiforecast.models.Wind;
@@ -19,5 +21,8 @@ public interface MainView {
     void setWindData(Wind wind);
     void setLastUpdate(String lastUpdate);
     void setRegionInfoData(String region);
+    void showError(String error);
+    @IdRes
+    void showError(int errorResId);
 
 }
