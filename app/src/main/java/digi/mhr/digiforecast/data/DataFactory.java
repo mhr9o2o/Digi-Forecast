@@ -3,6 +3,8 @@ package digi.mhr.digiforecast.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -117,6 +119,60 @@ public class DataFactory {
     /*
      * REFRESH:
      */
+    private void refreshCurrentWeather(double latitude, double longitude, final DataListener<GetCurrentWeatherResponse> listener) {
 
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                updateCurrentWeatherData(response);
+                Gson gson = new Gson();
+                try {
+                    GetCurrentWeatherResponse parsedResponse = gson.fromJson(response, GetCurrentWeatherResponse.class);
+                    listener.onDataReceived(parsedResponse);
+                } catch (ClassCastException|JsonSyntaxException e) {
+                    e.printStackTrace();
+                    listener.onError(e.getMessage());
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onError(error.getMessage());
+            }
+        };
+
+        apis.getCurrentWeatherCondition(latitude, longitude, responseListener, errorListener);
+
+    }
+
+    private void refreshFiveDayForecast(double latitude, double longitude, final DataListener<GetForecastResponse> listener) {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                updateForecastData(response);
+                Gson gson = new Gson();
+                try {
+                    GetForecastResponse parsedResponse = gson.fromJson(response, GetForecastResponse.class);
+                    listener.onDataReceived(parsedResponse);
+                } catch (ClassCastException|JsonSyntaxException e) {
+                    e.printStackTrace();
+                    listener.onError(e.getMessage());
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onError(error.getMessage());
+            }
+        };
+
+        apis.getFiveDayForecast(latitude, longitude, responseListener, errorListener);
+
+    }
 
 }
