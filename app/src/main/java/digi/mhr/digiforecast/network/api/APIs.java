@@ -23,7 +23,7 @@ public class APIs {
     /*
      * Constants:
      */
-    public final static String BASE_URL = "api.openweathermap.org/data/2.5/";
+    public final static String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     public final static String APP_ID = "22a24624399e846330b2f3b5614b598b";
     public final static String APP_ID_KEY = "appid";
     public final static String UNITS_KEY = "units";

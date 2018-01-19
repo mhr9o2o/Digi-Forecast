@@ -16,7 +16,7 @@ public class Wind implements Serializable {
     private double speed;
     @Expose
     @SerializedName("deg")
-    private int degree;
+    private double degree;
 
     public double getSpeed() {
         return speed;
@@ -26,11 +26,11 @@ public class Wind implements Serializable {
         this.speed = speed;
     }
 
-    public int getDegree() {
+    public double getDegree() {
         return degree;
     }
 
-    public void setDegree(int degree) {
+    public void setDegree(double degree) {
         this.degree = degree;
     }
 }

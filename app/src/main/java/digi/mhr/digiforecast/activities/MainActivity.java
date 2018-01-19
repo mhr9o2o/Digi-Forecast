@@ -1,8 +1,10 @@
 package digi.mhr.digiforecast.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +20,7 @@ import digi.mhr.digiforecast.R;
 import digi.mhr.digiforecast.models.TemperatureCondition;
 import digi.mhr.digiforecast.models.WeatherCondition;
 import digi.mhr.digiforecast.models.Wind;
+import digi.mhr.digiforecast.presenters.MainPresenterImp;
 import digi.mhr.digiforecast.views.MainView;
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -48,8 +51,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     /*
      * Parameters:
      */
+    private final long LOCATION_REFRESH_TIME = 60*1000; // 1 second
+    private final float LOCATION_REFRESH_DISTANCE = 10*1000; // 10 KM
     private boolean hasFineLocationAccess = false;
     private boolean hasCoarseLocationAccess = false;
+    private LocationManager locationManager;
+    private MainPresenterImp mainPresenter;
 
     /*
      * Activity Functions:
@@ -78,8 +85,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
          * Binding Views
          */
         bindViews();
+
+        /*
+         * Initializing the Presenter
+         */
+        mainPresenter = new MainPresenterImp(this);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onResume() {
         super.onResume();
@@ -87,14 +100,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
             ActivityCompat.requestPermissions(this,
                     new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
                     0);
+            mainPresenter.onResume(false);
         } else {
-            // TODO
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                    LOCATION_REFRESH_DISTANCE, mainPresenter.getLocationListener());
+            mainPresenter.onResume(true);
         }
     }
 
     /*
-         * Permission Callbacks:
-         */
+     * Permission Callbacks:
+     */
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -102,10 +121,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            // TODO
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                    LOCATION_REFRESH_DISTANCE, mainPresenter.getLocationListener());
+
+            mainPresenter.onPermissionApproved();
 
         } else {
-            // TODO
+            mainPresenter.onPermissionDenied();
         }
         return;
     }

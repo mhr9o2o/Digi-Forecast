@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import digi.mhr.digiforecast.R;
 import digi.mhr.digiforecast.data.DataFactory;
@@ -69,7 +70,9 @@ public class MainPresenterImp implements MainPresenter {
 
             @Override
             public void onError(String error) {
+                Log.e("Network Error", error);
                 mainView.showError(error);
+                mainView.hideLoading();
             }
         };
 
@@ -83,6 +86,7 @@ public class MainPresenterImp implements MainPresenter {
      * Functions
      */
     private void initResponseOnView(GetCurrentWeatherResponse response) {
+        mainView.configureViewAfterInitializing();
         /*
          * Region:
          */
