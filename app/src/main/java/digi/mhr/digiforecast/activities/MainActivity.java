@@ -21,6 +21,7 @@ import digi.mhr.digiforecast.models.TemperatureCondition;
 import digi.mhr.digiforecast.models.WeatherCondition;
 import digi.mhr.digiforecast.models.Wind;
 import digi.mhr.digiforecast.presenters.MainPresenterImp;
+import digi.mhr.digiforecast.utilities.FallbackLocationTracker;
 import digi.mhr.digiforecast.views.MainView;
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final float LOCATION_REFRESH_DISTANCE = 10*1000; // 10 KM
     private boolean hasFineLocationAccess = false;
     private boolean hasCoarseLocationAccess = false;
-    private LocationManager locationManager;
+    private FallbackLocationTracker locationTracker;
     private MainPresenterImp mainPresenter;
 
     /*
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainPresenter = new MainPresenterImp(this);
     }
 
-    @SuppressLint("MissingPermission")
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -102,10 +103,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
                     0);
             mainPresenter.onResume(false);
         } else {
-            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                    LOCATION_REFRESH_DISTANCE, mainPresenter.getLocationListener());
+            locationTracker = new FallbackLocationTracker(this);
+            mainPresenter.setLocationTracker(locationTracker);
             mainPresenter.onResume(true);
         }
     }
@@ -113,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     /*
      * Permission Callbacks:
      */
-    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -121,10 +119,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationTracker = new FallbackLocationTracker(this);
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                    LOCATION_REFRESH_DISTANCE, mainPresenter.getLocationListener());
+            mainPresenter.setLocationTracker(locationTracker);
 
             mainPresenter.onPermissionApproved();
 

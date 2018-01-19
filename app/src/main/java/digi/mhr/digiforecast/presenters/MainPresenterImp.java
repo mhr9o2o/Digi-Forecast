@@ -14,6 +14,7 @@ import digi.mhr.digiforecast.data.DataFactory;
 import digi.mhr.digiforecast.data.DataListener;
 import digi.mhr.digiforecast.models.Coordination;
 import digi.mhr.digiforecast.network.responses.GetCurrentWeatherResponse;
+import digi.mhr.digiforecast.utilities.FallbackLocationTracker;
 import digi.mhr.digiforecast.views.MainView;
 
 /**
@@ -26,7 +27,7 @@ public class MainPresenterImp implements MainPresenter {
      * Parameters
      */
     private MainView mainView;
-    private LocationListener locationListener;
+    private FallbackLocationTracker locationTracker;
     private Coordination coordination;
     private DataListener<GetCurrentWeatherResponse> dataListener;
 
@@ -36,30 +37,6 @@ public class MainPresenterImp implements MainPresenter {
     public MainPresenterImp(final MainView mainView) {
         this.mainView = mainView;
         coordination = new Coordination();
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                coordination.setLatitude(location.getLatitude());
-                coordination.setLongitude(location.getLongitude());
-                onRefresh();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
 
         dataListener = new DataListener<GetCurrentWeatherResponse>() {
             @Override
@@ -78,13 +55,21 @@ public class MainPresenterImp implements MainPresenter {
 
     }
 
-    public LocationListener getLocationListener() {
-        return locationListener;
+    public void setLocationTracker(FallbackLocationTracker locationTracker) {
+        this.locationTracker = locationTracker;
+        coordination = new Coordination();
+        if (locationTracker.getLocation() != null) {
+            coordination.setLatitude(locationTracker.getLocation().getLatitude());
+            coordination.setLongitude(locationTracker.getLocation().getLongitude());
+        } else if (locationTracker.getPossiblyStaleLocation() != null) {
+            coordination.setLatitude(locationTracker.getPossiblyStaleLocation().getLatitude());
+            coordination.setLongitude(locationTracker.getPossiblyStaleLocation().getLongitude());
+        }
     }
 
     /*
-     * Functions
-     */
+         * Functions
+         */
     private void initResponseOnView(GetCurrentWeatherResponse response) {
         mainView.configureViewAfterInitializing();
         /*
@@ -97,7 +82,7 @@ public class MainPresenterImp implements MainPresenter {
         }
 
         if (response.getSystemInformation() != null && response.getSystemInformation().getCountry() != null) {
-            regionInfo += response.getSystemInformation().getCountry();
+            regionInfo += ", " + response.getSystemInformation().getCountry();
         }
 
         mainView.setRegionInfoData(regionInfo);
@@ -131,6 +116,7 @@ public class MainPresenterImp implements MainPresenter {
     @Override
     public void onPermissionApproved() {
         mainView.configureViewAfterInitializing();
+        onRefresh();
     }
 
     @Override
