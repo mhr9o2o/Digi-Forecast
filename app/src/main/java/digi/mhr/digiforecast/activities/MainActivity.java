@@ -3,24 +3,18 @@ package digi.mhr.digiforecast.activities;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import digi.mhr.digiforecast.R;
-import digi.mhr.digiforecast.network.responses.GetCurrentWeatherResponse;
+import digi.mhr.digiforecast.models.TemperatureCondition;
+import digi.mhr.digiforecast.models.WeatherCondition;
+import digi.mhr.digiforecast.models.Wind;
+import digi.mhr.digiforecast.views.MainView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
 
     /*
      * Views:
@@ -35,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView currentConditionIV;
     private TextView conditionDescriptionTV;
     private TextView humidityTV;
-    private TextView windVelocityTV;
+    private TextView windSpeedTV;
     private TextView windDegreeTV;
     /*
      * * Activity Views:
@@ -67,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         currentConditionIV = findViewById(R.id.item_weather_detail_icon);
         conditionDescriptionTV = findViewById(R.id.item_weather_detail_description);
         humidityTV = findViewById(R.id.item_weather_detail_humidity);
-        windVelocityTV = findViewById(R.id.item_weather_detail_wind_velocity);
+        windSpeedTV = findViewById(R.id.item_weather_detail_wind_velocity);
         windDegreeTV = findViewById(R.id.item_weather_detail_wind_degree);
         //
         swipeRefreshLayout = findViewById(R.id.activity_main_refresh_layout);
@@ -76,6 +70,68 @@ public class MainActivity extends AppCompatActivity {
         lastUpdateTV = findViewById(R.id.activity_main_last_update);
     }
 
+    /*
+     * View Functions:
+     */
+    @Override
+    public void setInitialViewState() {
+        weatherDetailHolder.setVisibility(View.GONE);
+        lastUpdateLabelTV.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void configureViewAfterInitializing() {
+        weatherDetailHolder.setVisibility(View.VISIBLE);
+        lastUpdateLabelTV.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void showLoading() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void setTemperatureData(TemperatureCondition temperatureCondition) {
+        String celsiusSuffix = getResources().getString(R.string.celsius_degree);
+        String percentSuffix = getResources().getString(R.string.percent);
+        String currentTemp = String.valueOf(temperatureCondition.getTemperature()) + celsiusSuffix;
+        String minTemp = String.valueOf(temperatureCondition.getMinimumTemperature()) + celsiusSuffix;
+        String maxTemp = String.valueOf(temperatureCondition.getMaximumTemperature()) + celsiusSuffix;
+        String humidity = String.valueOf(temperatureCondition.getHumidity()) + percentSuffix;
+        currentTemperatureTV.setText(currentTemp);
+        minTemperatureTV.setText(minTemp);
+        maxTemperatureTV.setText(maxTemp);
+        humidityTV.setText(humidity);
+    }
+
+    @Override
+    public void setWeatherConditionData(WeatherCondition weatherCondition) {
+        currentConditionIV.setImageResource(weatherCondition.getIcon().getResValue());
+        conditionDescriptionTV.setText(weatherCondition.getDescription());
+    }
+
+    @Override
+    public void setWindData(Wind wind) {
+        String degreeSuffix = getResources().getString(R.string.degree_sign);
+        String speedSuffix = getResources().getString(R.string.kilometer_per_hour);
+        String windDegree = String.valueOf(wind.getDegree()) + degreeSuffix;
+        String windSpeed = String.valueOf(wind.getSpeed()) + speedSuffix;
+        windDegreeTV.setText(windDegree);
+        windSpeedTV.setText(windSpeed);
+    }
+
+    @Override
+    public void setLastUpdate(String lastUpdate) {
+        lastUpdateTV.setText(lastUpdate);
+    }
+
+    @Override
+    public void setRegionInfoData(String region) {
+        regionInfoTV.setText(region);
+    }
 }
