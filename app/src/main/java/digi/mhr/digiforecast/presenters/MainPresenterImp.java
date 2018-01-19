@@ -8,6 +8,7 @@ import digi.mhr.digiforecast.data.DataListener;
 import digi.mhr.digiforecast.models.Coordination;
 import digi.mhr.digiforecast.network.responses.GetCurrentWeatherResponse;
 import digi.mhr.digiforecast.utilities.Location.FallbackLocationTracker;
+import digi.mhr.digiforecast.utilities.TimeUtils;
 import digi.mhr.digiforecast.views.MainView;
 
 /**
@@ -100,7 +101,9 @@ public class MainPresenterImp implements MainPresenter {
         /*
          * Last Update:
          */
-        // TODO
+        if (response.getTimestamp() != 0) {
+            mainView.setLastUpdate(TimeUtils.getTimeAgo(response.getTimestamp()));
+        }
     }
 
     /*
