@@ -3,6 +3,7 @@ package digi.mhr.digiforecast.activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -76,6 +77,36 @@ public class MainActivity extends AppCompatActivity implements MainView {
          * Binding Views
          */
         bindViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!hasFineLocationAccess && !hasCoarseLocationAccess) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
+                    0);
+        } else {
+            // TODO
+        }
+    }
+
+    /*
+         * Permission Callbacks:
+         */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            // TODO
+
+        } else {
+            // TODO
+        }
+        return;
     }
 
     /*
