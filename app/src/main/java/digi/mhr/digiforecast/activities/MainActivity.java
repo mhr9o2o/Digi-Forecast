@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             hasFineLocationAccess = true;
-            
+
             locationTracker = new FallbackLocationTracker(this);
 
             mainPresenter.setLocationTracker(locationTracker);
